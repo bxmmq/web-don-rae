@@ -139,13 +139,9 @@ export default function ServicesSection() {
                                         : 'glass-card hover:border-accent/25 hover:-translate-y-1'
                                     }`}
                             >
-                                <motion.span
-                                    className="text-3xl inline-block"
-                                    whileHover={{ rotate: [0, -10, 10, -10, 10, 0], scale: 1.1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
+                                <span className="text-3xl inline-block">
                                     {s.icon}
-                                </motion.span>
+                                </span>
                                 <div>
                                     <h3 className={`font-serif text-lg font-semibold mb-2 leading-snug ${s.featured ? 'text-bg' : 'text-text-primary'}`}>
                                         {s.title}
