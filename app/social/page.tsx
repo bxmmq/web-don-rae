@@ -56,7 +56,7 @@ export default function SocialPage() {
                             {section.imageUrl && (
                                 <div className="border-b border-white/10 bg-black/20">
                                     <img
-                                        src={section.imageUrl}
+                                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${section.imageUrl}`}
                                         alt={section.title}
                                         className="w-full h-auto object-cover max-h-[300px]"
                                     />

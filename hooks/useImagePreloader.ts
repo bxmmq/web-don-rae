@@ -47,7 +47,8 @@ export function useImagePreloader({
 
         for (let i = 1; i <= totalFrames; i++) {
             const img = new Image()
-            img.src = `/${folder}/${padIndex(i)}.${extension}`
+            const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+            img.src = `${basePath}/${folder}/${padIndex(i)}.${extension}`
 
             img.onload = () => {
                 loadedCount++

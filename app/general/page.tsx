@@ -27,7 +27,7 @@ export default function GeneralPage() {
                         {/* ส่วนสำหรับใส่รูปภาพ PNG */}
                         <div className="mb-8 rounded-xl overflow-hidden border border-white/10 bg-black/20">
                             <img
-                                src="/images/don.png"
+                                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/don.png`}
                                 alt="แผนที่ที่ตั้งและอาณาเขตตำบลดอนแร่"
                                 className="w-full h-auto object-cover max-h-[500px]"
                             />
@@ -68,7 +68,7 @@ export default function GeneralPage() {
                         {/* ส่วนสำหรับใส่รูปภาพ PNG */}
                         <div className="rounded-xl overflow-hidden border border-white/10 bg-black/20">
                             <img
-                                src="/images/map.png"
+                                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/map.png`}
                                 alt="ลักษณะภูมิประเทศและภูมิอากาศตำบลดอนแร่"
                                 className="w-full h-auto object-cover max-h-[500px]"
                             />

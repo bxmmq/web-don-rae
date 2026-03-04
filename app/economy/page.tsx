@@ -23,7 +23,7 @@ export default function EconomyPage() {
                         {/* ส่วนสำหรับใส่รูปภาพ PNG */}
                         <div className="mb-8 rounded-xl overflow-hidden border border-white/10 bg-black/20">
                             <img
-                                src="/images/ar.png"
+                                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/ar.png`}
                                 alt="อาชีพหลักของประชาชนในตำบลดอนแร่"
                                 className="w-full h-auto object-cover max-h-[500px]"
                             />

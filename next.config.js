@@ -4,6 +4,9 @@ const nextConfig = {
   output: 'export', // การตั้งค่านี้สำคัญมากสำหรับ GitHub Pages
   basePath: '/web-don-rae', // ใส่ชื่อ repository ของคุณ
   assetPrefix: '/web-don-rae/', // ป้องกันปัญหาโหลดไฟล์ CSS/JS ไม่ขึ้น
+  env: {
+    NEXT_PUBLIC_BASE_PATH: '/web-don-rae',
+  },
   images: {
     unoptimized: true, // Static export ไม่รองรับ image optimization แบบปกติของ Next.js
   },

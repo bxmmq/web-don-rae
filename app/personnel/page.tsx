@@ -98,7 +98,7 @@ export default function PersonnelPage() {
                                 <div className="mb-6 mx-auto w-48 h-64 overflow-hidden rounded-xl border-4 border-accent/20 shadow-lg">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="/images/nittaya.jpg"
+                                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/nittaya.jpg`}
                                         alt="นส.นิตยา บัวแย้ม"
                                         className="object-cover w-full h-full"
                                     />
@@ -120,7 +120,7 @@ export default function PersonnelPage() {
                                             <div className="flex-shrink-0 w-20 h-24 sm:w-24 sm:h-28 overflow-hidden rounded-xl border-2 border-accent/20 shadow-md">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
-                                                    src={dept.image}
+                                                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}${dept.image}`}
                                                     alt={dept.head}
                                                     className="object-cover w-full h-full"
                                                 />
