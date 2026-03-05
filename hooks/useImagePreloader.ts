@@ -38,40 +38,87 @@ export function useImagePreloader({
             return
         }
 
-        const images: HTMLImageElement[] = []
+        const images: HTMLImageElement[] = new Array(totalFrames)
+        imagesRef.current = images
+
         let loadedCount = 0
+        let isCancelled = false
 
         function padIndex(i: number) {
             return String(i).padStart(digits, '0')
         }
 
-        for (let i = 1; i <= totalFrames; i++) {
-            const img = new Image()
+        const loadImages = async () => {
             const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
-            img.src = `${basePath}/${folder}/${padIndex(i)}.${extension}`
 
-            img.onload = () => {
-                loadedCount++
-                setProgress(loadedCount / totalFrames)
-                if (loadedCount === totalFrames) {
-                    imageCache.set(cacheKey, images)
-                    setLoaded(true)
+            // Priority: Load first frame immediately to unblock UI
+            await new Promise<void>((resolve) => {
+                const img = new Image()
+                img.onload = () => {
+                    loadedCount++
+                    if (!isCancelled) {
+                        setProgress(loadedCount / totalFrames)
+                        setLoaded(true)
+                    }
+                    images[0] = img
+                    resolve()
                 }
+                img.onerror = () => {
+                    loadedCount++
+                    if (!isCancelled) {
+                        setProgress(loadedCount / totalFrames)
+                        setLoaded(true)
+                    }
+                    images[0] = img
+                    resolve()
+                }
+                img.src = `${basePath}/${folder}/${padIndex(1)}.${extension}`
+            })
+
+            if (isCancelled) return
+
+            // Load the rest in batches to prevent network clogging
+            const batchSize = 10
+            for (let i = 2; i <= totalFrames; i += batchSize) {
+                if (isCancelled) break
+
+                const batchPromises = []
+                for (let j = 0; j < batchSize && (i + j) <= totalFrames; j++) {
+                    const currentIndex = i + j
+                    batchPromises.push(new Promise<void>((resolve) => {
+                        const img = new Image()
+                        img.onload = () => {
+                            loadedCount++
+                            if (!isCancelled) {
+                                setProgress(loadedCount / totalFrames)
+                            }
+                            images[currentIndex - 1] = img
+                            resolve()
+                        }
+                        img.onerror = () => {
+                            loadedCount++
+                            if (!isCancelled) {
+                                setProgress(loadedCount / totalFrames)
+                            }
+                            images[currentIndex - 1] = img
+                            resolve()
+                        }
+                        img.src = `${basePath}/${folder}/${padIndex(currentIndex)}.${extension}`
+                    }))
+                }
+                await Promise.all(batchPromises)
             }
 
-            img.onerror = () => {
-                loadedCount++
-                setProgress(loadedCount / totalFrames)
-                if (loadedCount === totalFrames) {
-                    imageCache.set(cacheKey, images)
-                    setLoaded(true)
-                }
+            if (!isCancelled) {
+                imageCache.set(cacheKey, images)
             }
-
-            images.push(img)
         }
 
-        imagesRef.current = images
+        loadImages()
+
+        return () => {
+            isCancelled = true
+        }
     }, [folder, totalFrames, digits, extension])
 
     return { images: imagesRef.current, loaded, progress }
