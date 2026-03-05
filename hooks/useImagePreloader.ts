@@ -22,7 +22,7 @@ export function useImagePreloader({
     folder,
     totalFrames = 192,
     digits = 5,
-    extension = 'png',
+    extension = 'webp',
 }: PreloaderOptions): PreloaderResult {
     const [loaded, setLoaded] = useState(false)
     const [progress, setProgress] = useState(0)
